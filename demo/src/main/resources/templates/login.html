@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet"/>
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <title>Home!</title>
+</head>
+<body>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col"></div>
+        <div class="col-6">
+            <div class="row">
+                <div class="col"></div>
+                <div class="col">
+                    <img th:src="@{/images/securemetric.jpeg}" alt="" width="172" height="172">
+                </div>
+                <div class="col"></div>
+            </div>
+            <div class="row">
+                <div class="col"></div>
+                <div class="col-10">
+                    <div class="alert alert-danger" role="alert" th:if="*{errors!=null and #strings.length(errors)>0}"
+                         th:text="${errors}"></div>
+                    <form class="form-signin" action="" th:action="@{/login}" th:object="${loginModel}" method="post">
+                        <label for="username" class="sr-only">User name</label>
+                        <input type="text" th:field="*{username}" id="username" class="form-control"
+                               placeholder="User name"
+                               autofocus>
+                        <label for="password" class="sr-only">Password</label>
+                        <input type="password" th:field="*{password}" id="password" class="form-control"
+                               placeholder="Password">
+                        <select class="form-control" id="mySelect2"></select>
+                        <button style="margin-top: 1rem;" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                    </form>
+                </div>
+                <div class="col"></div>
+
+            </div>
+        </div>
+        <div class="col"></div>
+    </div>
+
+</div>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+<script th:src="@{/js/popper.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
+<script type="text/javascript">
+    $('#mySelect2').select2({
+        ajax: {
+            url: '/dash/get/name',
+            dataType: 'json',
+            data: function (params) {
+                console.log(params)
+                if (params.term == undefined || params.term.length === 0) {
+                    return {
+                        name: "",
+                        offset: 0,
+                        limit: 5
+                    }
+                }
+
+                var query = {
+                    name: params.term,
+                    offset: 0,
+                    limit: 5
+                }
+                return query;
+            },
+            processResults: function (data) {
+                var results = [];
+                if (data.error_code === "SUCCESSFUL") {
+                    data.data.filter(function (val) {
+                        console.log(val);
+                        results.push({"id": val.id, "text": val.name});
+                        console.log(results)
+                    })
+                }
+                return {
+                    results: results
+                };
+            }
+        }
+    });
+
+    $("#mySelect2").change(function () {
+        var theID = $("#mySelect2").select2('data')[0].id;
+        var theSelection = $("#mySelect2").select2('data')[0].text;
+        setCookie("selectedOption", theID + "-" + theSelection, 1);
+    });
+
+    function setCookie(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+        var expires = "expires=" + d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,185 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <title>Home!</title>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class=login-body width="40%" align=center colspan="3"
+                 style="padding: 1rem 0rem 1rem 0;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+                <b>Enterprise Solution for Global
+                    Banking</b>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="login-body" width="5%" align="left" style="color: orange;">Hello,</div>
+            <div class=login-body width="35%" align=left style="text-transform: uppercase; color: orange;"
+                 colspan="2" th:text="${authModel.username}">
+            </div>
+        </div>
+        <div class="col">
+        </div>
+        <div class="col">
+
+            <div class=login-caption width="40%" align=right>
+                <a href="/logout"
+                   class="btn btn-secondary">Logout</a>
+            </div>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+        </div>
+        <div class="col">
+        </div>
+        <div class="col">
+            <img th:src="@{/images/logosm.png}" alt="" style="margin-bottom: 20px;">
+        </div>
+        <div class="col">
+        </div>
+        <div class="col"></div>
+    </div>
+    <div class="container balance"
+         style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);margin-bottom: 80px;">
+        <cen width="70%" class="fieldsettitle">
+            <br>
+            <form id="formBalance" action="#">
+                <table border="0" width="70%" cellspacing="0" cellpadding="3" align="center">
+                    <TR>
+                        <TH colSpan=5>New Account Transfer</TH>
+                    </TR>
+                    <TR>
+                        <TD class="caption" width="20%">Amount</TD>
+                        <TD width="30%"><input type="text" name="amount" id="amount" value="10"
+                                               class="mandatory form-control"></TD>
+                        <TD colspan=3> (millions VND)</TD>
+                    </TR>
+                    <TR>
+                        <TD class="caption" width="20%">From Account</TD>
+                        <TD width="30%"><input type="text" name="fromaccount" id="fromaccount" value="11402236836 SA"
+                                               readonly tabindex="-1" class="mandatory form-control"></TD>
+                        <TD width="5%"></TD>
+                        <TD class="caption" width="20%">To Account</TD>
+                        <TD width="30%"><input type="text" name="toaccount" id="toaccount" value="55204436106"
+                                               class="mandatory form-control"></TD>
+                    </TR>
+
+                    <TR>
+                        <TD class="caption" width="20%">Effective Date</TD>
+                        <TD width="30%">
+                            <input type="date" name="effdate" id="effdate"
+                                   class="mandatory form-control date-picker"
+                            ></TD>
+                        <TD width="5%"></TD>
+                        <TD class="caption" width="20%"></TD>
+                        <TD width="30%"><input class="form-control" type="hidden" name="recemail" id="recemail"
+                                               value="">
+                        </TD>
+                        <input type="hidden" name="transaction" id="transaction" value="">
+                    </TR>
+
+                    <TR rowspan="2">
+                        <td colspan="5">&nbsp;</td>
+                    </TR>
+                    <input type="hidden" name="desc" id="desc" value="">
+                </table>
+            </form>
+            <table border="0" width="70%" cellspacing="0" cellpadding="3" align="center">
+                <TR>
+                    <TD width="35%"></TD>
+                    <TD width="15%"><INPUT name="btnclear" type=button value="Clear"
+                                           class="btn btn-danger"></TD>
+                    <TD width="15%"><INPUT name="btnproceed" type=button value="Proceed"
+                                           class="btn btn-info btnProceed"></TD>
+                    <TD width="35%"></TD>
+                </TR>
+            </table>
+        </cen>
+    </div>
+
+    <div class="row d-none authMethod balance">
+        <div class="col">
+            <button class="btn btn-sm btn-primary" id="btnOTPAuth">OTP</button>
+            <button class="btn btn-sm btn-primary" id="btnQRAuth">QR</button>
+            <button class="btn btn-sm btn-primary" id="btnCROTPAuth">CROTP</button>
+        </div>
+    </div>
+
+    <div class="row d-none verifyOTP">
+        <div class="col">
+            <label for="otp">OTP</label>
+            <input id="otp" name="otp" type="text" class="form-control" required maxlength="6">
+            <button class="btn btn-secondary btnOTPAuthSubmit">Submit</button>
+        </div>
+    </div>
+
+    <div class="row d-none verifyQR">
+        <div class="col"></div>
+        <div class="col">
+<!--            <img src="" alt="">-->
+            <div id="qrcode"></div>
+            <div class="d-none" id="qrauthtoken"></div>
+            <div class="d-none" id="qrauthdetail"></div>
+            <div class="d-none" id="qrauthchallenge"></div>
+            <div class="d-none" id="qrauthcode"></div>
+            <div class="d-none" id="qrplaintext"></div>
+            <input id="qrotp" name="qrotp" type="text" class="qrshow form-control d-none" required maxlength="6">
+            <button class="btn btn-secondary btnQROTPAuthSubmit d-none qrshow">Submit</button>
+        </div>
+        <div class="col"></div>
+    </div>
+
+    <div class="row d-none verifyCROTP">
+        <div class="col">
+            <label for="challenge">Challenge</label>
+            <div id="challenge" style="color: green;" name="challenge"></div>
+            <label for="crotp">CROTP</label>
+            <input id="crotp" name="crotp" type="text" class="form-control" required maxlength="6">
+            <button class="btn btn-secondary btnCROTPAuthSubmit">Submit</button>
+        </div>
+    </div>
+
+</div>
+
+<div class="modal notification" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Notification</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body notifi-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+<script th:src="@{/js/popper.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/qrcode.min.js}"></script>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

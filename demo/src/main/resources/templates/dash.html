@@ -1,0 +1,135 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <title>DASH!</title>
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <button class="btn btn-primary" data-toggle="modal" data-target="#addModal" style="font-size:1rem;">+
+            </button>
+        </div>
+        <div class="col-12">
+            <table class="table table-striped table-dark">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">privateKey</th>
+                    <th scope="col">secretKey</th>
+                    <th scope="col">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="company: ${companies}">
+                    <th scope="row" th:text="${company.id}"></th>
+                    <td th:text="${company.name}"></td>
+                    <td style="max-width:200px;
+    word-wrap:break-word;" th:text="${company.privateKey}"></td>
+                    <td th:text="${company.secretKey}"></td>
+                    <td>
+                        <a class="btn btn-sm btn-danger" th:href="@{/dash/delete/{id}(id=${company.id})}">Delete</a>
+                        <a class="btn btn-sm btn-warning"
+                           th:href="@{/dash/get/{id}(id=${company.id})}"
+                        >Update</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+
+        </div>
+
+
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form th:action="@{/dash/}" th:object="${company}" method="post">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addModalLabel">Modal Create</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <label for="name" class="sr-only">Name</label>
+                        <input type="text" th:field="*{name}" id="name" class="form-control"
+                               placeholder="name"
+                               autofocus>
+                        <label for="privateKey" class="sr-only">privateKey</label>
+                        <input type="text" th:field="*{privateKey}" id="privateKey" class="form-control"
+                               placeholder="privateKey"
+                               autofocus>
+                        <label for="secretKey" class="sr-only">secretKey</label>
+                        <input type="text" th:field="*{secretKey}" id="secretKey" class="form-control"
+                               placeholder="secretKey"
+                               autofocus>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Create</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- UPDATE Modal -->
+    <div class="modal fade" th:id="${updateModal}" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form th:action="@{/dash/update/{id}(id=${company.id})}" th:object="${company}" method="post">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="updateModalLabel">Modal Update</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" th:field="*{name}" class="form-control"
+                               placeholder="name"
+                               autofocus>
+                        <input type="text" th:field="*{privateKey}" class="form-control"
+                               placeholder="privateKey"
+                               autofocus>
+                        <input type="text" th:field="*{secretKey}" class="form-control"
+                               placeholder="secretKey"
+                               autofocus>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+<script th:src="@{/js/popper.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/qrcode.min.js}"></script>
+<script type="text/javascript">
+    $('#updateModal').modal("show");
+</script>
+</body>
+</html>
